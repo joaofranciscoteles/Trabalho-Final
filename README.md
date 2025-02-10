@@ -7,55 +7,89 @@
 
 ## Introdução
 
-Este repositório contém um conjunto de scripts Python que processa dados de uma base de dados de produtos, cria grafos de coocorrência entre os produtos e gera um sistema de recomendação baseado em grafos. O objetivo é recomendar produtos aos usuários com base nas coocorrências de compras de outros produtos dentro de diferentes departamentos de uma loja.
+Este repositório contém um conjunto de scripts Python que processam dados da base de dados Instacart, criam grafos de coocorrência entre produtos e geram um sistema de recomendação baseado nesses grafos. O objetivo é recomendar produtos aos usuários com base nas coocorrências de compras dentro de diferentes departamentos de uma loja.
 
-A base de dados usada é composta pelos seguintes arquivos:
+A base de dados original pode ser baixada no **[Kaggle - Instacart Market Basket Analysis](https://www.kaggle.com/c/instacart-market-basket-analysis/data)**. Os arquivos necessários são:
 
 - `order_products__prior.csv`: Contém informações sobre os pedidos e os produtos comprados.
 - `products.csv`: Informações sobre os produtos, como nome e ID.
 - `departments.csv`: Informações sobre os departamentos aos quais os produtos pertencem.
 
-Estes arquivos podem ser baixados diretamente no site Kaggle - Instacart Market Basket Analysis.
+Estes arquivos devem ser baixados e colocados na pasta `base_de_dados`. Além disso, a base de dados processada já está disponível no **Zenodo** pelo seguinte link: [Acesso à Base Processada](X).
+
+---
 
 ## Fluxo de Processamento
 
-O sistema é dividido em várias etapas, onde um script depende do anterior para gerar o próximo resultado:
+O sistema é dividido em várias etapas, onde um script depende do anterior para gerar o próximo resultado.
 
-1. **Processamento de Dados (`processamento.py`)**:
-   - O script carrega e processa os dados dos arquivos CSV, integrando as informações de pedidos, produtos e departamentos. O resultado é um arquivo CSV com os dados processados, necessário para os próximos passos.
+### 📌 Códigos Principais
 
-2. **Geração de Grafos de Coocorrência (`graph_generator.py`)**:
-   - O script lê o arquivo processado e cria grafos de coocorrência para cada departamento, onde os nós representam os produtos e as arestas representam a coocorrência de produtos em pedidos. Os grafos são salvos em arquivos `.gpickle`.
+1. **Processamento de Dados (`processamento.py`)**
+   - **Entrada**: Arquivos CSV da base de dados (`order_products__prior.csv`, `products.csv`, `departments.csv`).
+   - **Descrição**: Processa e integra os dados dos pedidos, produtos e departamentos, gerando um único arquivo consolidado.
+   - **Saída**: `processed_data_with_departments.csv` (salvo na pasta `base_de_dados`).
 
-3. **Visualização de Grafos (`graph_vizualization.py`)**:
-   - Neste script, é necessário colocar o arquivo `.gpickle` correspondente do grafo que se deseja visualizar. O script gera uma visualização interativa utilizando Plotly, ou uma versão estática com Matplotlib, dependendo do tamanho do grafo.
+2. **Geração de Grafos de Coocorrência (`graph_generator.py`)**
+   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Descrição**: Cria 21 grafos de coocorrência entre produtos, um para cada departamento.
+   - **Saída**: Arquivos `.gpickle` na pasta `base_de_dados`.
 
-4. **Geração de Árvore Máxima de Coocorrência (`arvoremaxima.py`)**:
-   - O script gera uma árvore de extensão máxima (MST) para cada grafo criado no código `graph_generator`, baseada no peso das arestas. Ele salva esses grafos como novos arquivos `.gpickle` em uma pasta específica.
+3. **Visualização de Grafos (`graph_visualization.py`)**
+   - **Entrada**: Um dos arquivos `.gpickle` gerados pelo `graph_generator.py`.
+   - **Descrição**: Gera uma visualização do grafo desejado.
+   - **Saída**: Visualização gráfica interativa ou estática.
 
-5. **Cálculo da Densidade dos Grafos (`densitycalculator.py`)**:
-   - Este script calcula e exibe a densidade de cada grafo de departamento, tanto em uma tabela como em um gráfico de barras.
+4. **Geração de Árvore Máxima de Coocorrência (`arvore_maxima.py`)**
+   - **Entrada**: Arquivos `.gpickle` gerados pelo `graph_generator.py`.
+   - **Descrição**: Aplica o algoritmo de Árvore Geradora Mínima (MST) e salva os novos grafos com MST aplicada.
+   - **Saída**: Arquivos `.gpickle` na pasta `Grafos_MST_maxima`.
 
-6. **Sistema de Recomendação de Produtos (`sistemarecomendacao.py`)**:
-   - Utilizando os grafos de MST gerados, o script permite que o usuário insira uma lista de produtos e receba recomendações de outros produtos relacionados, baseadas nas coocorrências.
+5. **Sistema de Recomendação (`sistema_recomendacao.py`)**
+   - **Entrada**: Grafos `.gpickle` processados pelo `arvore_maxima.py`.
+   - **Descrição**: Permite ao usuário inserir um produto e receber recomendações baseadas nas coocorrências.
+   - **Saída**: Recomendações exibidas no terminal.
 
-7. **Cálculo do Grau dos Produtos (`calculograu.py`)**:
-   - Este script calcula o grau de cada nó em dois grafos de departamentos específicos, determinando os produtos mais conectados (com maior grau).
+6. **Cálculo da Densidade dos Grafos (`density_calculator.py`)**
+   - **Entrada**: Arquivos `.gpickle` gerados pelo `graph_generator.py`.
+   - **Descrição**: Calcula a densidade de cada grafo de departamento e salva os resultados.
+   - **Saída**: Arquivo `densidade_grafos.csv` salvo na pasta `dados`.
 
-8. **Conexões Fortes (`conexoes_fortes.py`)**:
-   - O script `conexoes_fortes.py` tem como objetivo carregar um grafo no formato `.gpickle` (o caminho do grafo pode ser alterado através da variável `input_file` no código), verificar se o grafo contém pesos nas arestas e extrair as 10 conexões mais fortes, ou seja, as arestas com maior peso. Estas conexões são então salvas em um arquivo CSV, que pode ser utilizado para análises posteriores ou para visualização dos produtos mais fortemente conectados.
+---
 
-9. **Visualização das Conexões Fortes (`conexoes_fortes_visualization.py`)**:
-   - O script `conexoes_fortes_visualization.py` tem como objetivo criar e visualizar um grafo com as 10 conexões mais fortes entre produtos, com base em um conjunto de dados predefinido de conexões gerado pelo código `conexoes_fortes.py`. O grafo gerado pode ser visualizado de duas formas: uma visualização interativa utilizando Plotly e uma versão estática utilizando Matplotlib.
+### 📌 Códigos Geradores de Dados para o Artigo
 
-10. **Top 10 Mais Vendidos e Menos Vendidos de Cada Departamento (Produce e Personal Care) (`top10_mais_menos_vendidos.py`)**:
-   - O script `top10_mais_menos_vendidos.py` tem como objetivo analisar os dados de vendas de produtos, identificando os 10 produtos mais vendidos e os 10 menos vendidos em departamentos específicos. Ele processa os dados de vendas em chunks, calcula a quantidade vendida de cada produto e gera gráficos para os 10 produtos mais vendidos e os 10 menos vendidos de cada departamento. O relatório final é salvo em um arquivo CSV.
+7. **Comparação entre Grafos Originais e MST (`comparacao_mst.py`)**
+   - **Entrada**: Arquivos `.gpickle` dos grafos originais e das MSTs.
+   - **Descrição**: Compara estatísticas (número de nós, arestas e pesos médios) entre os grafos originais e as árvores geradas.
+   - **Saída**: `comparacao_mst.csv` salvo na pasta `dados` + gráficos comparativos.
 
-11. **Total de Vendas para Cada Departamento (`total_vendas_por_departamento.py`)**:
-   - O script `total_vendas_por_departamento.py` tem como objetivo analisar a quantidade total de vendas por departamento, gerando uma tabela com o total de vendas de cada departamento, bem como um gráfico de barras horizontal. O relatório final é salvo em um arquivo CSV e o gráfico gerado é salvo em formato PNG.
+8. **Identificação das Conexões Mais Fortes (`conexoes_fortes.py`)**
+   - **Entrada**: Arquivo `.gpickle` de um grafo MST gerado pelo `arvore_maxima.py`.
+   - **Descrição**: Extrai as 10 conexões mais fortes (arestas de maior peso) do grafo.
+   - **Saída**: `top_10_conexoes.csv` salvo na pasta `dados`.
 
-12. **Vendas por Produto (`vendas_por_produto.py`)**:
-   - O script `vendas_por_produto.py` tem como objetivo calcular o total de vendas por produto para departamentos específicos. O script processa os dados de vendas, agrupa as informações por departamento e produto, e salva o total de vendas por produto em um arquivo CSV para cada departamento.
+9. **Visualização das Conexões Mais Fortes (`conexoes_fortes_visualization.py`)**
+   - **Entrada**: Arquivo gerado pelo `conexoes_fortes.py`.
+   - **Descrição**: Cria uma visualização gráfica interativa e uma imagem estática das 10 conexões mais fortes.
+   - **Saída**: `grafo_top_10.html` (visualização interativa) e `grafo_top_10.png` (imagem).
+
+10. **Top 10 Mais e Menos Vendidos por Departamento (`top10_mais_menos_vendidos.py`)**
+   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Descrição**: Calcula os 10 produtos mais vendidos e os 10 menos vendidos nos departamentos "Produce" e "Personal Care".
+   - **Saída**: `relatorio_vendas_departamentos.csv` salvo na pasta `dados` + gráficos.
+
+11. **Total de Vendas por Departamento (`total_vendas_por_departamento.py`)**
+   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Descrição**: Calcula o total de vendas por departamento e gera uma visualização gráfica.
+   - **Saída**: `vendas_por_departamento.csv` e `vendas_por_departamento.png` salvos na pasta `dados`.
+
+12. **Vendas por Produto (`vendas_por_produto.py`)**
+   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Descrição**: Calcula o total de vendas por produto nos departamentos "Produce" e "Personal Care".
+   - **Saída**: Arquivos CSV separados por departamento na pasta `dados`.
+
+---
 
 13. **Acesso ao Projeto**:
    - O acesso ao trabalho completo pode ser obtido através desse link do Google Drive: [Acesso ao projeto](https://drive.google.com/drive/folders/1AJ6vPFUd2RKiaVoqWz9Znyx31C4fYq-6?usp=sharing)
