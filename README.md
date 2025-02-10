@@ -15,7 +15,7 @@ A base de dados original pode ser baixada no **[Kaggle - Instacart Market Basket
 - `products.csv`: Informações sobre os produtos, como nome e ID.
 - `departments.csv`: Informações sobre os departamentos aos quais os produtos pertencem.
 
-Estes arquivos devem ser baixados e colocados na pasta `base_de_dados`. Além disso, a base de dados processada já está disponível no **Zenodo** pelo seguinte link: [Acesso à Base Processada](X).
+Estes arquivos devem ser baixados e colocados na pasta `base_de_dados`. Além disso, a base de dados processada já está disponível no **drive** do projeto disponível no link: [Acesso ao projeto](https://drive.google.com/drive/folders/1AJ6vPFUd2RKiaVoqWz9Znyx31C4fYq-6?usp=sharing).
 
 ---
 
