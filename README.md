@@ -117,9 +117,9 @@ import difflib
 
 Para rodar o código, é necessário instalar as bibliotecas utilizadas. Use o comando `pip install` para instalar as dependências.
 
-
+```
 pip install pandas networkx matplotlib plotly tkinter
-
+```
 
 
 
