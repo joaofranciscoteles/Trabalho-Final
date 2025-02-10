@@ -9,7 +9,7 @@
 Esse projeto é baseado no artigo:  
 [Otimização de Vendas no E-commerce de
 Supermercados por Meio de Recomendação
-Baseada em Grafos]()
+Baseada em Grafos](https://github.com/joaofranciscoteles/Trabalho-Final/blob/main/artigo/Artigo_Jo%C3%A3oFrancisco.pdf)
 ## Introdução
 
 Este repositório contém um conjunto de scripts Python que processam dados da base de dados Instacart, criam grafos de coocorrência entre produtos e geram um sistema de recomendação baseado nesses grafos. O objetivo é recomendar produtos aos usuários com base nas coocorrências de compras dentro de diferentes departamentos de uma loja.
