@@ -77,6 +77,8 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import collections
 import difflib
+
+```
 ## Instalação das Dependências
 
 Para rodar o código, é necessário instalar as bibliotecas utilizadas. Use o comando `pip install` para instalar as dependências.
