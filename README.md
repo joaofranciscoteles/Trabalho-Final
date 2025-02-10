@@ -28,25 +28,25 @@ O sistema é dividido em várias etapas, onde um script depende do anterior para
 1. **Processamento de Dados (`processamento.py`)**
    - **Entrada**: Arquivos CSV da base de dados (`order_products__prior.csv`, `products.csv`, `departments.csv`).
    - **Descrição**: Processa e integra os dados dos pedidos, produtos e departamentos, gerando um único arquivo consolidado.
-   - **Saída**: `processed_data_with_departments.csv` (salvo na pasta `base_de_dados`).
+   - **Saída**: `processed_data_with_departments.csv` (deve ser salvo na pasta `base_de_dados`).
 
 2. **Geração de Grafos de Coocorrência (`graph_generator.py`)**
    - **Entrada**: `processed_data_with_departments.csv`.
    - **Descrição**: Cria 21 grafos de coocorrência entre produtos, um para cada departamento.
-   - **Saída**: Arquivos `.gpickle` na pasta `base_de_dados`.
+   - **Saída**: Arquivos `.gpickle`.
 
 3. **Visualização de Grafos (`graph_visualization.py`)**
-   - **Entrada**: Um dos arquivos `.gpickle` gerados pelo `graph_generator.py`.
+   - **Entrada**:  Deve ser colocado no código um dos arquivos `.gpickle`  gerados pelo `graph_generator.py` que o usuário deseja gerar a imagem .
    - **Descrição**: Gera uma visualização do grafo desejado.
    - **Saída**: Visualização gráfica interativa ou estática.
 
 4. **Geração de Árvore Máxima de Coocorrência (`arvore_maxima.py`)**
    - **Entrada**: Arquivos `.gpickle` gerados pelo `graph_generator.py`.
-   - **Descrição**: Aplica o algoritmo de Árvore Geradora Mínima (MST) e salva os novos grafos com MST aplicada.
+   - **Descrição**: Aplica o algoritmo de Árvore Geradora Máxima (MST) e salva os novos grafos com MST aplicada.
    - **Saída**: Arquivos `.gpickle` na pasta `Grafos_MST_maxima`.
 
 5. **Sistema de Recomendação (`sistema_recomendacao.py`)**
-   - **Entrada**: Grafos `.gpickle` processados pelo `arvore_maxima.py`.
+   - **Entrada**: Grafos `.gpickle` processados pelo `arvore_maxima.py` da pasta Grafos_MST_maxima.
    - **Descrição**: Permite ao usuário inserir um produto e receber recomendações baseadas nas coocorrências.
    - **Saída**: Recomendações exibidas no terminal.
 
@@ -60,32 +60,32 @@ O sistema é dividido em várias etapas, onde um script depende do anterior para
 ### 📌 Códigos Geradores de Dados para o Artigo
 
 7. **Comparação entre Grafos Originais e MST (`comparacao_mst.py`)**
-   - **Entrada**: Arquivos `.gpickle` dos grafos originais e das MSTs.
+   - **Entrada**: Arquivos `.gpickle` dos grafos originais e das MSTs da pasta Grafos_MST_maxima.
    - **Descrição**: Compara estatísticas (número de nós, arestas e pesos médios) entre os grafos originais e as árvores geradas.
    - **Saída**: `comparacao_mst.csv` salvo na pasta `dados` + gráficos comparativos.
 
 8. **Identificação das Conexões Mais Fortes (`conexoes_fortes.py`)**
-   - **Entrada**: Arquivo `.gpickle` de um grafo MST gerado pelo `arvore_maxima.py`.
+   - **Entrada**: Arquivo `.gpickle` de um grafo MST gerado pelo `arvore_maxima.py` da pasta Grafos_MST_maxima.
    - **Descrição**: Extrai as 10 conexões mais fortes (arestas de maior peso) do grafo.
    - **Saída**: `top_10_conexoes.csv` salvo na pasta `dados`.
 
 9. **Visualização das Conexões Mais Fortes (`conexoes_fortes_visualization.py`)**
-   - **Entrada**: Arquivo gerado pelo `conexoes_fortes.py`.
+   - **Entrada**: Dados gerados pelo `conexoes_fortes.py` no terminal.
    - **Descrição**: Cria uma visualização gráfica interativa e uma imagem estática das 10 conexões mais fortes.
    - **Saída**: `grafo_top_10.html` (visualização interativa) e `grafo_top_10.png` (imagem).
 
 10. **Top 10 Mais e Menos Vendidos por Departamento (`top10_mais_menos_vendidos.py`)**
-   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Entrada**: `processed_data_with_departments.csv` da pasta base_de_dados.
    - **Descrição**: Calcula os 10 produtos mais vendidos e os 10 menos vendidos nos departamentos "Produce" e "Personal Care".
    - **Saída**: `relatorio_vendas_departamentos.csv` salvo na pasta `dados` + gráficos.
 
 11. **Total de Vendas por Departamento (`total_vendas_por_departamento.py`)**
-   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Entrada**: `processed_data_with_departments.csv` da pasta ´base_de_dados´.
    - **Descrição**: Calcula o total de vendas por departamento e gera uma visualização gráfica.
    - **Saída**: `vendas_por_departamento.csv` e `vendas_por_departamento.png` salvos na pasta `dados`.
 
 12. **Vendas por Produto (`vendas_por_produto.py`)**
-   - **Entrada**: `processed_data_with_departments.csv`.
+   - **Entrada**: `processed_data_with_departments.csv` da pasta base_de_dados.
    - **Descrição**: Calcula o total de vendas por produto nos departamentos "Produce" e "Personal Care".
    - **Saída**: Arquivos CSV separados por departamento na pasta `dados`.
 
