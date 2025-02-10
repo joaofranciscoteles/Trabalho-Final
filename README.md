@@ -116,6 +116,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import collections
 import difflib
+import numpy as np
+from pathlib import Path
+
 
 ```
 ## Instalação das Dependências
